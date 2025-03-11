@@ -9,6 +9,7 @@ public class AccountMapper {
 
   public AccountDTO mapEntityToResponse(Account account, Customer customer) {
     return new AccountDTO(
+      account.getAccountNumber(),
       account.getAccountType(),
       account.getBranchAddress(),
       customer.getName(),

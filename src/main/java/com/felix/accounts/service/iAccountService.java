@@ -11,4 +11,6 @@ public interface iAccountService {
   AccountDTO getAccountById(Long id);
 
   void updateAccount(Long id, AccountDTO accountDTO);
+
+  boolean deleteAccount(Long customerId);
 }

@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+// @MappedSuperclass ensures that its fields (createdAt, createdBy, etc.)
+// are mapped to child entities but does not create a separate table.
 @MappedSuperclass
 @Data
 public class BaseEntity {

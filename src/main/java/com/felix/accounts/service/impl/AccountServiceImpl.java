@@ -32,7 +32,7 @@ public class AccountServiceImpl implements iAccountService {
 
     // creating new customer instance
     Customer customer = new Customer();
-    customer.setName(accountDTO.getCustomerName());
+    customer.setName(accountDTO.getName());
     customer.setMobileNumber(accountDTO.getMobileNumber());
     customer.setEmail(accountDTO.getEmail());
 
@@ -68,6 +68,7 @@ public class AccountServiceImpl implements iAccountService {
     );
 
     return new AccountDTO(
+      account.getAccountNumber(),
       account.getAccountType(),
       account.getBranchAddress(),
       customer.getName(),
@@ -79,7 +80,7 @@ public class AccountServiceImpl implements iAccountService {
   @Override
   public AccountDTO getAccountById(Long id) {
     Customer customer = customerRepository.findById(id).orElseThrow(
-      () -> new ResourceNotFoundException("Customer", "uid : ", id.toString())
+      () -> new ResourceNotFoundException("Customer", "uid", id.toString())
     );
 
     Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
@@ -87,6 +88,7 @@ public class AccountServiceImpl implements iAccountService {
     );
 
     return new AccountDTO(
+      account.getAccountNumber(),
       account.getAccountType(),
       account.getBranchAddress(),
       customer.getName(),
@@ -101,7 +103,7 @@ public class AccountServiceImpl implements iAccountService {
     Customer customer = customerRepository.findById(id)
       .map(
         updatedCustomer -> {
-          updatedCustomer.setName(accountDTO.getCustomerName());
+          updatedCustomer.setName(accountDTO.getName());
           updatedCustomer.setEmail(accountDTO.getEmail());
           return customerRepository.save(updatedCustomer);
         }
@@ -123,6 +125,17 @@ public class AccountServiceImpl implements iAccountService {
         () -> new ResourceNotFoundException("Account", "customer id", customer.getCustomerId().toString())
       );
 
+  }
+
+  @Override
+  @Transactional
+  public boolean deleteAccount(Long customerId) {
+    if (customerRepository.existsById(customerId)) {
+      customerRepository.deleteById(customerId);
+      accountRepository.deleteByCustomerId(customerId);
+      return true;
+    }
+    return false;
   }
 
 }
