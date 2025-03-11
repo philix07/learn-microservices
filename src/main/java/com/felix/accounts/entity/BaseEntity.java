@@ -2,16 +2,12 @@ package com.felix.accounts.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter
-@Setter
-@ToString
+@Data
 public class BaseEntity {
 
   @Column(updatable = false)
